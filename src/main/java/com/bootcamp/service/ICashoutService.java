@@ -8,7 +8,7 @@ import java.util.List;
 public interface ICashoutService {
     public List<CashoutEntity> GetAll();
     public CashoutEntity Insert();
-    public CashoutEntity Update();
-    public Integer Delete();
+    //public CashoutEntity Update();
+    //public Integer Delete();
     public CashoutEntity GetByID();
 }
