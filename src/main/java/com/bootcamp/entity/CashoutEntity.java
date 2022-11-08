@@ -26,18 +26,18 @@ public class CashoutEntity {
     @JoinColumn(name = "in_id_membership")
     private MembershipEntity membership;
 
-    @Column(name = "db_amount")
+    @Column(name = "db_amount", nullable = false)
     private double amount;
 
-    @Column(name = "dt_cashout_date")
+    @Column(name = "dt_cashout_date", nullable = false)
     @JsonFormat(pattern="dd/MM/yyyy")
     private Date cashoutDate;
 
-    @Column(name = "dt_creation_date")
+    @Column(name = "dt_creation_date", nullable = false)
     @JsonFormat(pattern="dd/MM/yyyy")
     private Date  creationDate;
 
-    @Column(name = "vc_creation_user")
+    @Column(name = "vc_creation_user", nullable = false, length = 50)
     private String creationUser;
 
     @Column(name = "dt_modification_date")
