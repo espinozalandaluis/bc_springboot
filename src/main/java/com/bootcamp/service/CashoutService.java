@@ -24,15 +24,15 @@ public class CashoutService implements ICashoutService{
         return null;
     }
 
-    @Override
-    public CashoutEntity Update() {
-        return null;
-    }
+    //@Override
+    //public CashoutEntity Update() {
+      //  return null;
+    //}
 
-    @Override
-    public Integer Delete() {
-        return null;
-    }
+    //@Override
+    //public Integer Delete() {
+      //  return null;
+    //}
 
     @Override
     public CashoutEntity GetByID() {
