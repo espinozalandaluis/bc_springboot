@@ -9,4 +9,5 @@ public class Constants {
         public static final int TechnicalError = -2;
         public static final int FunctionalError = -3;
     };
+
 }
