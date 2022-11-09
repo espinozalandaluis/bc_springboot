@@ -17,7 +17,6 @@ import java.util.List;
 @Table(name = "afp")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class AfpEntity {
     @Id
@@ -25,8 +24,8 @@ public class AfpEntity {
     @Column(name = "in_id")
     private int id;
 
-    @Column(name = "vc_code")
-    private String code;
+    @Column(name = "vc_description")
+    private String description;
 
     @Column(name = "bt_status")
     private Boolean status;
@@ -44,4 +43,10 @@ public class AfpEntity {
 
     @Column(name = "vc_modification_user")
     private String modificationUser;
+
+    public AfpEntity() {
+        this.status = true;
+        this.creationDate = new Date();
+        this.creationUser = "ADMIN";
+    }
 }
