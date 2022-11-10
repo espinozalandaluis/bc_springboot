@@ -34,10 +34,12 @@ public class AfpController {
     IAfpService cService;
     @Operation(summary = "Función que se encarga de obtener las AFPs registradas.")
     @ApiResponses(value ={
-            @ApiResponse(responseCode = "200", description = "Lista de AFPs correcta.",
+            @ApiResponse(responseCode = "200", description = "Correcto",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
-            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+            @ApiResponse(responseCode = "500", description = "El servidor ha encontrado una situación inesperada",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @GetMapping(value = "/getall")
@@ -55,12 +57,12 @@ public class AfpController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -72,10 +74,12 @@ public class AfpController {
 
     @Operation(summary = "Función que se encarga de obtener una AFP por ID.")
     @ApiResponses(value ={
-            @ApiResponse(responseCode = "200", description = "AFP correcto.",
+            @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @GetMapping(value = "/getbyid/{id}")
@@ -94,12 +98,12 @@ public class AfpController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -113,7 +117,11 @@ public class AfpController {
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "201", description = "Creado",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @PostMapping(value = "/insert")
@@ -132,12 +140,12 @@ public class AfpController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -151,7 +159,11 @@ public class AfpController {
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "201", description = "Creado",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @PutMapping(value = "/update")
@@ -170,12 +182,12 @@ public class AfpController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -190,6 +202,8 @@ public class AfpController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @DeleteMapping(value = "/delete/{id}")
@@ -208,12 +222,12 @@ public class AfpController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),

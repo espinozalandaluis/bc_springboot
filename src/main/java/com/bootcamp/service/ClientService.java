@@ -1,6 +1,7 @@
 package com.bootcamp.service;
 
 import com.bootcamp.common.exceptions.FunctionalException;
+import com.bootcamp.common.exceptions.NotFoundException;
 import com.bootcamp.entity.AfpEntity;
 import com.bootcamp.entity.ClientEntity;
 import com.bootcamp.model.afp.ClientModel;
@@ -38,14 +39,14 @@ public class ClientService implements IClientService {
             return Optional.of(cRepository.save(clientEntity));
         }
         else
-            throw new FunctionalException(String.format("El cliente %s ya se encuentra registrado",clientModel.getDni()));
+            throw new FunctionalException(String.format("El cliente %s ya se encuentra registrado.",clientModel.getDni()));
     }
 
     @Override
-    public ClientEntity Update(ClientModel clientModel) throws FunctionalException {
+    public ClientEntity Update(ClientModel clientModel) throws FunctionalException, NotFoundException {
         var clientOptional = cRepository.findById(clientModel.getId());
         if(clientOptional.isEmpty()){
-            throw new FunctionalException("El cliente que intenta actualizar no existe");
+            throw new NotFoundException("El cliente no se encuentra registrado.");
         }
         else{
             var clientEntity = clientOptional.get();

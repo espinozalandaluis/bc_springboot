@@ -38,7 +38,11 @@ public class CashoutController {
             @ApiResponse(responseCode = "200", description = "Lista de Solicitude de Retiro de forma correcta",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = CashoutEntity.class))}),
+            @ApiResponse(responseCode = "201", description = "Creado",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @GetMapping(value = "/getall")
@@ -56,12 +60,12 @@ public class CashoutController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -76,10 +80,17 @@ public class CashoutController {
             @ApiResponse(responseCode = "200", description = "Solicitud de Retiro de afp realizado correctamente",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = CashoutEntity.class))}),
-            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+            @ApiResponse(responseCode = "201", description = "Creado",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Error en el Formato",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "El servidor no pudo encontrar el contenido solicitado",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
+
     })
     @PostMapping(value="/insert")
     public ResponseEntity<?> Insert(@RequestBody CashoutModel cash){
@@ -94,12 +105,12 @@ public class CashoutController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -108,5 +119,4 @@ public class CashoutController {
             }
         }
     }
-
 }

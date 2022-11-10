@@ -3,6 +3,7 @@ package com.bootcamp.controller;
 import com.bootcamp.common.Constants;
 import com.bootcamp.common.ResponseApi;
 import com.bootcamp.common.exceptions.FunctionalException;
+import com.bootcamp.common.exceptions.NotFoundException;
 import com.bootcamp.common.exceptions.TechnicalExceptions;
 import com.bootcamp.entity.AfpEntity;
 import com.bootcamp.entity.ClientEntity;
@@ -37,10 +38,14 @@ public class ClientController {
     IClientService cService;
     @Operation(summary = "Función que se encarga de obtener los clientes registrados.")
     @ApiResponses(value ={
-            @ApiResponse(responseCode = "200", description = "Lista de Clientes correcto.",
+            @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
-            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+            @ApiResponse(responseCode = "201", description = "Creado",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "El servidor ha encontrado una situación inesperada",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @PostMapping(value="/insert")
@@ -56,12 +61,12 @@ public class ClientController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -75,15 +80,22 @@ public class ClientController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AfpEntity.class))}),
-            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                            schema = @Schema(implementation = ClientEntity.class))}),
+            @ApiResponse(responseCode = "201", description = "Creado",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "El servidor no pudo encontrar el contenido solicitado",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "El servidor ha encontrado una situación inesperada",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
+
     })
     @PutMapping(value="/update")
     public ResponseEntity<?> Update(@RequestBody ClientModel clientModel){
         try{
             var data = cService.Update(clientModel);
-            logger.info(String.format("El cliente %s ha sido actualizado correctamente",data.getDni()));
+            logger.info(String.format("El cliente %s se actualizó",data.getDni()));
             return new ResponseEntity<Object>(ResponseApi.Response(String.format("El cliente %s ha sido actualizado correctamente",data.getDni()),
                     Constants.SystemStatusCode.Ok,
                     data), HttpStatus.OK);
@@ -94,12 +106,17 @@ public class ClientController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
+            }
+            else if(exception instanceof NotFoundException){
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.FunctionalError,
+                        Optional.empty()), HttpStatus.NOT_FOUND);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -114,7 +131,11 @@ public class ClientController {
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "201", description = "Creado",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @DeleteMapping(value = "/delete/{id}")
@@ -132,12 +153,12 @@ public class ClientController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
@@ -149,10 +170,12 @@ public class ClientController {
 
     @Operation(summary = "Función que se encarga de obtener los clientes registrados.")
     @ApiResponses(value ={
-            @ApiResponse(responseCode = "200", description = "Lista de AFPs correcta.",
+            @ApiResponse(responseCode = "200", description = "Correcto",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content)
     })
     @GetMapping(value = "/getall")
@@ -170,12 +193,12 @@ public class ClientController {
 
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.TechnicalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
             }
             else if(exception instanceof FunctionalException){
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
-                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
