@@ -8,6 +8,11 @@ import com.bootcamp.entity.ClientEntity;
 import com.bootcamp.model.afp.AfpModel;
 import com.bootcamp.service.IAfpService;
 import com.bootcamp.service.IClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +23,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping(value = "/afp")
 public class AfpController {
 
     @Autowired
     IAfpService cService;
+    @Operation(summary = "Función que se encarga de obtener las AFPs registradas.")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "Lista de AFPs correcto.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content)
+    })
 
     @GetMapping(value = "/getall")
     public ResponseEntity GetAll() {

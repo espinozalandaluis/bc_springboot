@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping(value = "/client")
 public class ClientController {
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
