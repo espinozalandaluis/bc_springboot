@@ -12,5 +12,4 @@ import java.util.List;
 @Repository
 public interface IAfpRepository  extends JpaRepository<AfpEntity,Integer> {
     List<AfpEntity> findByDescription(String description);
-
 }

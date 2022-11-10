@@ -18,7 +18,6 @@ import java.util.List;
 @Table(name = "client")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class ClientEntity {
     @Id
@@ -38,6 +37,9 @@ public class ClientEntity {
     @Column(name = "vc_phone")
     private String phone;
 
+    @Column(name = "vc_email")
+    private String email;
+
     @Column(name = "bt_status")
     private Boolean status;
 
@@ -54,4 +56,10 @@ public class ClientEntity {
 
     @Column(name = "vc_modification_user")
     private String modificationUser;
+
+    public ClientEntity() {
+        this.status = true;
+        this.creationDate = new Date();
+        this.creationUser = System.getProperty("user.name");
+    }
 }

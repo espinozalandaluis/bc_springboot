@@ -47,6 +47,6 @@ public class AfpEntity {
     public AfpEntity() {
         this.status = true;
         this.creationDate = new Date();
-        this.creationUser = "ADMIN";
+        this.creationUser = System.getProperty("user.name");
     }
 }

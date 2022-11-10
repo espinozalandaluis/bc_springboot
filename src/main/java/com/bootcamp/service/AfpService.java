@@ -46,7 +46,7 @@ public class AfpService implements  IAfpService {
         else {
             var afpEntity = afpOptional.get();
             afpEntity.setDescription(afpModel.getDescription().toUpperCase().trim());
-            afpEntity.setModificationUser("ADMIN");
+            afpEntity.setModificationUser(System.getProperty("user.name"));
             afpEntity.setModificationDate(new Date());
             return cRepository.save(afpEntity);
         }
@@ -61,6 +61,8 @@ public class AfpService implements  IAfpService {
         else{
             var afpEntity = afpOptional.get();
             afpEntity.setStatus(false);
+            afpEntity.setModificationUser(System.getProperty("user.name"));
+            afpEntity.setModificationDate(new Date());
             cRepository.save(afpEntity);
             return afpEntity;
         }
