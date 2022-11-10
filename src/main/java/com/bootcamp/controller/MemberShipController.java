@@ -2,6 +2,7 @@ package com.bootcamp.controller;
 
 import com.bootcamp.common.Constants;
 import com.bootcamp.common.ResponseApi;
+import com.bootcamp.common.exceptions.ConflictExceptions;
 import com.bootcamp.common.exceptions.FunctionalException;
 import com.bootcamp.common.exceptions.TechnicalExceptions;
 import com.bootcamp.entity.MembershipEntity;
@@ -21,6 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -105,6 +109,63 @@ public class MemberShipController {
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
                         Constants.SystemStatusCode.FunctionalError,
                         Optional.empty()), HttpStatus.BAD_GATEWAY);
+            }
+            else{
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.FunctionalError,
+                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
+
+    @Operation(summary = "Función que se encarga de vincular un cliente a la afp.")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "Se registró la afiliación.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MembershipEntity.class))}),
+            @ApiResponse(responseCode = "400", description = "Datos de cliente o afp no concuerdan.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MembershipEntity.class))}),
+            @ApiResponse(responseCode = "409", description = "El cliente ya se encuentra registrado a esta afp.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MembershipEntity.class))}),
+            @ApiResponse(responseCode = "302", description = "El cliente ya se encuentra registrado a otra afp.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MembershipEntity.class))}),
+            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content)
+    })
+
+    @PostMapping(value="/register")
+    public ResponseEntity<?> Register(@RequestBody MembershipModel membershipEntity){
+        try {
+            var rpta = mService.Add(membershipEntity);
+            Iterator<Integer> key = rpta.keySet().iterator();
+            Map<String, Object> map = new HashMap<String, Object>();
+            switch (key.next()){
+                case -1:
+                    logger.info("Se registró la afiliación");
+                    return new ResponseEntity<Object>(ResponseApi.Response("Se registró la afiliación.", Constants.SystemStatusCode.FunctionalError, rpta), HttpStatus.CREATED);
+            }
+            return new ResponseEntity<Object>(map, HttpStatus.OK);
+        }
+        catch (Exception exception){
+            logger.error(exception.getMessage());
+            if(exception instanceof TechnicalExceptions){
+
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.TechnicalError,
+                        Optional.empty()), HttpStatus.NOT_IMPLEMENTED);
+            }
+            else if(exception instanceof FunctionalException){
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.FunctionalError,
+                        Optional.empty()), HttpStatus.BAD_GATEWAY);
+            }
+            else if(exception instanceof ConflictExceptions){
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.FunctionalError,
+                        Optional.empty()), HttpStatus.CONFLICT);
             }
             else{
                 return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),

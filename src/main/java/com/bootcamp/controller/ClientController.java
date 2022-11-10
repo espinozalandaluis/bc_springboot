@@ -40,7 +40,7 @@ public class ClientController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AfpEntity.class))}),
+                            schema = @Schema(implementation = ClientEntity.class))}),
             @ApiResponse(responseCode = "201", description = "Creado",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "El servidor ha encontrado una situación inesperada",
@@ -130,7 +130,7 @@ public class ClientController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AfpEntity.class))}),
+                            schema = @Schema(implementation = ClientEntity.class))}),
             @ApiResponse(responseCode = "201", description = "Creado",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
@@ -172,7 +172,7 @@ public class ClientController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "Correcto",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AfpEntity.class))}),
+                            schema = @Schema(implementation = ClientEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",

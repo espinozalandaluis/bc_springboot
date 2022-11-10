@@ -1,5 +1,6 @@
 package com.bootcamp.service;
 
+import com.bootcamp.common.exceptions.ConflictExceptions;
 import com.bootcamp.common.exceptions.FunctionalException;
 import com.bootcamp.entity.AfpEntity;
 import com.bootcamp.entity.ClientEntity;
@@ -11,9 +12,7 @@ import com.bootcamp.repository.IMembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MembershipService implements  IMembershipService {
@@ -87,6 +86,42 @@ public class MembershipService implements  IMembershipService {
         membershipEntity.setCreationDate(new Date());
         membershipEntity.setCreationUser(System.getProperty("user.name"));
         return Optional.of(mRepository.save(membershipEntity));
+    }
+
+    public Map<Integer, Optional<MembershipEntity>> Add(MembershipModel membership) throws ConflictExceptions, FunctionalException {
+        Map<Integer, Optional<MembershipEntity>> rpta = new HashMap<>();
+        ClientEntity clientEntity = cRepository.findById(membership.getIdCliente()).get();
+        var b_afp = aRepository.findById(membership.getIdAfp());
+        //
+        if(clientEntity != null && !b_afp.isEmpty()) {
+            var aux = mRepository.findByClientAndStatusTrue(clientEntity);
+            if(aux!=null) {
+                if (aux.get(0).getAfp().getId() == b_afp.get().getId()) {
+                    throw new ConflictExceptions(String.format("No se pudo registrar la afiliación de %s a %s. Ya se encuentra registrado.",
+                            clientEntity.getDni(),
+                            b_afp.get().getDescription()));
+                } else {
+                    throw new ConflictExceptions(String.format("No se pudo registrar la afiliación de %s a %s. Ya se encuentra registrado a otra afp.",
+                            clientEntity.getDni(),
+                            b_afp.get().getDescription()));
+                }
+            }
+            else {
+                MembershipEntity membershipEntity = new MembershipEntity();
+                membershipEntity.setStatus(true);
+                membershipEntity.setCreationDate(new Date());
+                membershipEntity.setCreationUser(System.getProperty("user.name"));
+                membershipEntity.setClient(clientEntity);
+                membershipEntity.setAfp(b_afp.get());
+                var response =  mRepository.save(membershipEntity);
+                rpta.put(-1, Optional.of(response));
+                return rpta;
+            }
+        }
+        else {
+            throw new FunctionalException(String.format("No se pudo registrar la afiliación de %s",
+                    clientEntity.getDni()));
+        }
     }
 
     @Override
