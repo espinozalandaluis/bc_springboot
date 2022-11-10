@@ -49,28 +49,29 @@ public class CashoutService implements ICashoutService{
     }
     @Override
     public Optional<CashoutEntity> Insert(CashoutModel cash) throws FunctionalException {
-        MembershipEntity rpta = GetByIDForCashout(cash.getId());
+        var membership = mRepository.findById(cash.getIdMembership());
 
-        if (rpta != null){
-            int idmember = rpta.getId(); //OBTENER ID DEL MEMBERSHIP
-            double dmontototal = rpta.getAmount(); //OBTENER MONTO DEL MEMBERSHIP
+        if (membership.isPresent()){
+            double dmontototal = membership.get().getAmount(); //OBTENER MONTO DEL MEMBERSHIP
             double dmontominimo = dmontototal * 0.5; //MONTO DEL 50% DEL TOTAL
-            boolean bActivo = rpta.getStatus();//SI ESTA ACTIVO O NO LA MEMBRESIA
+            boolean bActivo = membership.get().getStatus();//SI ESTA ACTIVO O NO LA MEMBRESIA
 
             if (bActivo){
-                if (cash.getAmount() > dmontominimo){
-                    if (cash.getAmount() < dmontototal){
+                if (cash.getAmount() >= dmontominimo){
+                    if (cash.getAmount() <= dmontototal){
+
+                        membership.get().setAmount(dmontototal - dmontominimo);
+                        membership.get().setModificationDate(new Date());
+                        membership.get().setModificationUser(System.getProperty("user.name"));
+
+                        UpdateAmount(membership.get());//ACTUALIZACION DEL MONTO
+
                         CashoutEntity cashEntity = new CashoutEntity();
+                        cashEntity.setAmount(cash.getAmount());
+                        cashEntity.setMembership(membership.get());
                         cashEntity.setCreationDate(new Date());
                         cashEntity.setCashoutDate(new Date());
-                        cashEntity.setModificationDate(new Date());
                         cashEntity.setCreationUser(System.getProperty("user.name"));
-
-                        rpta.setAmount(dmontototal - dmontominimo);
-                        rpta.setModificationDate(new Date());
-                        rpta.setModificationUser(System.getProperty("user.name"));
-
-                        UpdateAmount(rpta);//ACTUALIZACION DEL MONTO
 
                         return Optional.of(cRepository.save(cashEntity));
                     }

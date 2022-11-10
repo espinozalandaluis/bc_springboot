@@ -37,9 +37,13 @@ public class AfpController {
             @ApiResponse(responseCode = "200", description = "Correcto",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "400", description = "El servidor no pudo interpretar la solicitud dada una sintaxis inválida",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "El servidor ha encontrado una situación inesperada",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @GetMapping(value = "/getall")
@@ -77,9 +81,13 @@ public class AfpController {
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "400", description = "El servidor no pudo interpretar la solicitud dada una sintaxis inválida",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @GetMapping(value = "/getbyid/{id}")
@@ -119,9 +127,13 @@ public class AfpController {
                             schema = @Schema(implementation = AfpEntity.class))}),
             @ApiResponse(responseCode = "201", description = "Creado",
                     content = @Content),
+            @ApiResponse(responseCode = "400", description = "El servidor no pudo interpretar la solicitud dada una sintaxis inválida",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @PostMapping(value = "/insert")
@@ -161,9 +173,13 @@ public class AfpController {
                             schema = @Schema(implementation = AfpEntity.class))}),
             @ApiResponse(responseCode = "201", description = "Creado",
                     content = @Content),
+            @ApiResponse(responseCode = "400", description = "El servidor no pudo interpretar la solicitud dada una sintaxis inválida",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @PutMapping(value = "/update")
@@ -201,9 +217,13 @@ public class AfpController {
             @ApiResponse(responseCode = "200", description = "Correcto.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "400", description = "El servidor no pudo interpretar la solicitud dada una sintaxis inválida",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @DeleteMapping(value = "/delete/{id}")

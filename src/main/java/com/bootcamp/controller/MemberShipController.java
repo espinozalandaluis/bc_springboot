@@ -43,6 +43,8 @@ public class MemberShipController {
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
                     content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
+                    content = @Content)
     })
     @GetMapping(value = "/getall")
     public ResponseEntity GetAll() {
@@ -74,6 +76,7 @@ public class MemberShipController {
         }
     }
 
+    /*
     @Operation(summary = "Función que se encarga de registrar una nueva membresia.")
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "La membresia se registro correctamente",
@@ -88,6 +91,8 @@ public class MemberShipController {
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @PostMapping(value="/insert")
@@ -117,12 +122,14 @@ public class MemberShipController {
             }
         }
     }
-
+    */
     @Operation(summary = "Función que se encarga de vincular un cliente a la afp.")
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "Se registró la afiliación.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MembershipEntity.class))}),
+            @ApiResponse(responseCode = "201", description = "Creado",
+                    content = @Content),
             @ApiResponse(responseCode = "400", description = "Datos de cliente o afp no concuerdan.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MembershipEntity.class))}),
@@ -133,11 +140,15 @@ public class MemberShipController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MembershipEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content),
+            @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
 
-    @PostMapping(value="/register")
-    public ResponseEntity<?> Register(@RequestBody MembershipModel membershipEntity){
+    @PostMapping(value="/insert")
+    public ResponseEntity<?> Insert(@RequestBody MembershipModel membershipEntity){
         try {
             var rpta = mService.Add(membershipEntity);
             Iterator<Integer> key = rpta.keySet().iterator();
@@ -183,6 +194,8 @@ public class MemberShipController {
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @GetMapping(value = "/getmembership/{id}")

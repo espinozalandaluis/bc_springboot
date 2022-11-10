@@ -40,9 +40,13 @@ public class CashoutController {
                             schema = @Schema(implementation = CashoutEntity.class))}),
             @ApiResponse(responseCode = "201", description = "Creado",
                     content = @Content),
+            @ApiResponse(responseCode = "400", description = "El servidor no pudo interpretar la solicitud dada una sintaxis inválida",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
     })
     @GetMapping(value = "/getall")
@@ -89,6 +93,8 @@ public class CashoutController {
             @ApiResponse(responseCode = "500", description = "Error en el Servicio",
                     content = @Content),
             @ApiResponse(responseCode = "501", description = "El método solicitado no está soportado por el servidor",
+                    content = @Content),
+            @ApiResponse(responseCode = "502", description = "Respuesta invalida",
                     content = @Content)
 
     })

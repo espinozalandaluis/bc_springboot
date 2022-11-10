@@ -91,19 +91,19 @@ public class MembershipService implements  IMembershipService {
     public Map<Integer, Optional<MembershipEntity>> Add(MembershipModel membership) throws ConflictExceptions, FunctionalException {
         Map<Integer, Optional<MembershipEntity>> rpta = new HashMap<>();
         ClientEntity clientEntity = cRepository.findById(membership.getIdCliente()).get();
-        var b_afp = aRepository.findById(membership.getIdAfp());
+        var afpEntity = aRepository.findById(membership.getIdAfp());
         //
-        if(clientEntity != null && !b_afp.isEmpty()) {
-            var aux = mRepository.findByClientAndStatusTrue(clientEntity);
-            if(aux!=null) {
-                if (aux.get(0).getAfp().getId() == b_afp.get().getId()) {
+        if(clientEntity != null && !afpEntity.isEmpty()) {
+            var membershipEntities = mRepository.findByClientAndStatusTrue(clientEntity);
+            if(!membershipEntities.isEmpty()) {
+                if (membershipEntities.get(0).getAfp().getId() == afpEntity.get().getId()) {
                     throw new ConflictExceptions(String.format("No se pudo registrar la afiliación de %s a %s. Ya se encuentra registrado.",
                             clientEntity.getDni(),
-                            b_afp.get().getDescription()));
+                            afpEntity.get().getDescription()));
                 } else {
                     throw new ConflictExceptions(String.format("No se pudo registrar la afiliación de %s a %s. Ya se encuentra registrado a otra afp.",
                             clientEntity.getDni(),
-                            b_afp.get().getDescription()));
+                            afpEntity.get().getDescription()));
                 }
             }
             else {
@@ -112,7 +112,9 @@ public class MembershipService implements  IMembershipService {
                 membershipEntity.setCreationDate(new Date());
                 membershipEntity.setCreationUser(System.getProperty("user.name"));
                 membershipEntity.setClient(clientEntity);
-                membershipEntity.setAfp(b_afp.get());
+                membershipEntity.setAfp(afpEntity.get());
+                membershipEntity.setAmount(membership.getAmount());
+                membershipEntity.setAccount(membership.getAccount());
                 var response =  mRepository.save(membershipEntity);
                 rpta.put(-1, Optional.of(response));
                 return rpta;

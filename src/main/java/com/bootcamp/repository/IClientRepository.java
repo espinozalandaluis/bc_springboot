@@ -11,5 +11,4 @@ import java.util.List;
 @Repository
 public interface IClientRepository extends JpaRepository<ClientEntity,Integer> {
     List<ClientEntity> findByDni(String dni);
-    //List<MembershipEntity> findByClientAndStatusTrue(ClientEntity clientEntity);
 }
