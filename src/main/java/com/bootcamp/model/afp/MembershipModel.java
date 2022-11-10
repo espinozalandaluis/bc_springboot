@@ -10,22 +10,27 @@ import lombok.Setter;
 public class MembershipModel {
     private int id;
 
-    @Schema(description = "campo que define el ID de la membresia.",
+    @Schema(description = "campo que define el ID del cliente.",
             type = "integer",
             required = true,
             example = "1 - 999999")
-    private int idMembership;
+    private int idCliente;
+
+    @Schema(description = "campo que define el ID del afp.",
+            type = "integer",
+            required = true,
+            example = "1 - 999999")
+    private int idAfp;
+
+    @Schema(description = "campo que define el nro de cuenta del cliente.",
+            type = "string",
+            required = true,
+            example = "CTA999999999999")
+    private String account;
 
     @Schema(description = "campo que define el monto a retirar del cliente.",
             type = "decimal",
             required = true,
             example = "1 - 999999.99")
     private double amount;
-
-    @Schema(description = "campo que define la fecha del retiro.",
-            type = "date",
-            required = true,
-            example = "01/01/1900")
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private String cashoutDate;
 }

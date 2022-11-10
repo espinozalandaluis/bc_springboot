@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IClientRepository extends JpaRepository<ClientEntity,Integer>, IClientCustomRepository {
+public interface IClientRepository extends JpaRepository<ClientEntity,Integer> {
     List<ClientEntity> findByDni(String dni);
 }
