@@ -147,12 +147,41 @@ public class ClientController {
         }
     }
 
+    @Operation(summary = "Función que se encarga de obtener los clientes registrados.")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "Lista de AFPs correcta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AfpEntity.class))}),
+            @ApiResponse(responseCode = "500", description = "Error en el Servicio",
+                    content = @Content)
+    })
     @GetMapping(value = "/getall")
     public ResponseEntity GetAll() {
-        var data = cService.GetAll();
-        logger.info("Se listaron {} clientes", data.stream().count());
-        return new ResponseEntity(
-                data,
-                HttpStatus.OK);
+        try{
+            var data = cService.GetAll();
+            logger.info("Se obtuvieron los clientes registradas.");
+            return new ResponseEntity<Object>(ResponseApi.Response("Se obtuvieron los clientes registrados..",
+                    Constants.SystemStatusCode.Ok,
+                    data), HttpStatus.OK);
+        }
+        catch (Exception exception){
+            logger.error(exception.getMessage());
+            if(exception instanceof TechnicalExceptions){
+
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.TechnicalError,
+                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            else if(exception instanceof FunctionalException){
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.FunctionalError,
+                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            else{
+                return new ResponseEntity<Object>(ResponseApi.Response(exception.getMessage(),
+                        Constants.SystemStatusCode.FunctionalError,
+                        Optional.empty()), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 }

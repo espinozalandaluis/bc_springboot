@@ -42,7 +42,6 @@ public class AfpController {
     })
     @GetMapping(value = "/getall")
     public ResponseEntity GetAll() {
-        Map<String, Object> map = new HashMap<String, Object>();
         try{
             var data = cService.GetAll();
             logger.info("Se obtuvieron las AFPs registradas.");

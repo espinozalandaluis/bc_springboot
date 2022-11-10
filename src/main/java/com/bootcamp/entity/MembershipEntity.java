@@ -33,6 +33,12 @@ public class MembershipEntity {
     @JoinColumn(name = "in_id_afp")
     private AfpEntity afp;
 
+    @Column(name = "db_amount")
+    private double amount;
+
+    @Column(name = "vc_account")
+    private String account;
+
     @Column(name = "bt_status")
     private Boolean status;
 
